@@ -1,12 +1,9 @@
 <template>
-  <div v-if="paginaAtual === 'RegisterUser'">
-    <RegisterUser />
-  </div>
-  <div v-else-if="paginaAtual === 'HomeMenu'">
-    <HomeMenu />
-  </div>
-  <div v-else-if="paginaAtual === 'Login'">
-    <LoginPage />
+  <div class="principal">
+    <component
+      :is="paginaAtualComponent"
+      v-if="paginaAtualComponent"
+    />
   </div>
 </template>
 
@@ -33,8 +30,42 @@ export default {
 
   computed: {
     ...mapGetters(["paginaAtual"]),
+    paginaAtualComponent() {
+      switch (this.paginaAtual) {
+        case 'LoginPage':
+          return 'LoginPage';
+        case 'HomeMenu':
+          return 'HomeMenu';
+        case 'RegisterUser':
+          return 'RegisterUser';
+        default:
+          return null;
+      }
+    },
   },
 
   methods: {},
 };
 </script>
+
+<style>
+.principal {
+  min-height: 800px;
+  border: 1px solid #bca931;
+  box-shadow: 0 0 10px #bca931;
+  border-radius: 20px;
+  width: 500px;
+  margin: 0 auto;
+  background-color: #e3dec0;
+}
+
+.item {
+  margin: 20px auto;
+}
+
+label {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+</style>

@@ -1,15 +1,53 @@
 <template>
-  <div class="register">
-    <h1>Cadastrar novo usuário</h1>
-    <input type="text" placeholder="Nome" v-model="name" />
-    <input type="text" placeholder="UserName" v-model="username" />
-    <p v-if="usernameError" class="error">{{ usernameError }}</p>
-    <input type="password" placeholder="Senha" v-model="password" />
-    <p v-if="passwordError" class="error">{{ passwordError }}</p>
-    <button class="btn-cadastrar" @click="cadastrar">Cadastrar</button>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <p v-if="successPage" class="success">Usuário cadastrado com sucesso!</p>
-    <button class="btn-voltar" @click="voltar">Voltar</button>
+  <div class="register container">
+    <h1 class="text-center my-4 title">Cadastrar novo usuário:</h1>
+    <form @submit.prevent="cadastrar">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nome:</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          placeholder="name"
+          v-model="name"
+        />
+        <div v-if="nameError" class="text-danger">{{ nameErrorComputed }}</div>
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Nome do usuário:</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="username"
+          v-model="username"
+        />
+        <div v-if="usernameError" class="text-danger">{{ usernameErrorComputed }}</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="password"
+          v-model="password"
+        />
+        <div v-if="passwordError" class="text-danger">{{ passwordErrorComputed }}</div>
+      </div>
+      <div class="buttons">
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-warning">Cadastrar</button>
+        </div>
+        <div v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</div>
+        <div v-if="successPage" class="text-success mt-3">
+          Usuário cadastrado com sucesso!
+        </div>
+        <div class="d-grid gap-2 mt-3">
+          <button type="button" class="btn btn-dark" @click="voltar">Voltar</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -25,32 +63,45 @@ export default {
       password: "",
       errorMessage: "",
       successPage: false,
+      passwordError: false,
+      usernameError: false,
+      nameError: false,
     };
   },
   computed: {
-    usernameError() {
-      const usernameRegex = /^[a-zA-Z0-9._-]{3,}$/;
+    usernameErrorComputed() {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!this.username) {
         return "O campo UserName é obrigatório";
-      } else if (!usernameRegex.test(this.username)) {
-        return "O UserName deve ter pelo menos 3 caracteres e pode conter letras, números, pontos, traços e sublinhados";
+      } else if (!emailRegex.test(this.username)) {
+        return "O UserName deve ser um email válido";
       }
       return "";
     },
-    passwordError() {
-      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    passwordErrorComputed() {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
+      
       if (!this.password) {
         return "O campo Senha é obrigatório";
       } else if (!passwordRegex.test(this.password)) {
-        return "A Senha deve ter pelo menos 8 caracteres, incluindo letras e números";
+        return "A Senha deve ter pelo menos 8 caracteres, contendo pelo menos uma letra maiúscula, um número e um caractere especial";
+      }
+      return "";
+    },
+    nameErrorComputed() {
+      if (!this.name) {
+        return "O campo Nome é obrigatório";
       }
       return "";
     },
   },
   methods: {
     async cadastrar() {
-      if (!this.name || !this.username || !this.password) {
-        this.errorMessage = "Todos os campos são obrigatórios";
+      this.nameError = this.nameErrorComputed !== "";
+      this.usernameError = this.usernameErrorComputed !== "";
+      this.passwordError = this.passwordErrorComputed !== "";
+
+      if (this.nameError || this.usernameError || this.passwordError) {
         return;
       }
 
@@ -75,56 +126,23 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .register {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 800px;
-  align-items: center;
-}
-
-h1 {
-  font-size: 30pt;
-  margin: 20px;
-  color: white;
-}
-
-input {
-  font-size: 24px;
-  margin-top: 30px;
-  padding: 10px;
-}
-
-.btn-cadastrar {
-  font-size: 24px;
-  margin-top: 30px;
-  padding: 10px;
-  background-color: #2baca5;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-cadastrar:hover {
-  background-color: #279a94;
-}
-
-.btn-voltar {
-  font-size: 24px;
-  padding: 10px;
-  background-color: azure;
-  border: none;
-  cursor: pointer;
-}
-
-.error {
-  color: red;
   margin-top: 20px;
+  padding: 70px;
 }
 
-.success {
-  color: green;
-  margin-top: 20px;
+.title {
+  color: rgb(0, 0, 0) !important;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+label {
+  font-weight: bold;
+}
+
+.buttons {
+  margin-top: 80px;
+}
+
 </style>

@@ -1,61 +1,57 @@
 <template>
-  <div class="home">
-    <h1>Seja bem-vindo ao sistema de cadastro de usuários</h1>
-    <button @click="startLogin">Entrar com usuário</button>
-    <button @click="startRegister">Cadastrar novo usuário</button>
+  <div class="container menu">
+    <img src="../assets/bitcoin.png" alt="" />
+    <h1 class="">Seja bem-vindo ao sistema de cadastro de usuários</h1>
+    <div class="d-flex flex-column align-items-center">
+      <button class="btn btn-warning mb-3" @click="startLogin">
+        Entrar com usuário existente
+      </button>
+      ou
+      <button class="btn btn-dark mb-3" @click="startRegister">
+        Cadastrar um novo usuário
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "HomeMenu",
   methods: {
+    ...mapMutations(["setPage"]),
     startLogin() {
-      this.$store.commit("setPage", "Login");
+      this.setPage("LoginPage");
     },
     startRegister() {
-      console.log("startRegister");
-      this.$store.commit("setPage", "RegisterUser");
+      this.setPage("RegisterUser");
     },
   },
 };
 </script>
 
-<style scoped lang="scss">
-.home {
+<style scoped>
+.menu {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 800px;
   align-items: center;
-  // borda leve com efeito de sombreamento
-  border: 1px solid #bca931;
-  box-shadow: 0 0 10px #bca931;
-  border-radius: 20px;
-  width: 500px;
-  margin: 0 auto;
-  color: white;
-}
-
-h1 {
-  font-size: 30pt;
-  margin: 20px;
 }
 
 button {
-  height: 200px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  margin: 20px;
-  background-color: #bca931;
-  width: 300px;
-  font-size: 20pt;
-  font-weight: bold;
-  overflow: hidden;
-  border-radius: 20px;
+  margin: 10px;
+  width: 200px;
 }
 
-button:hover {
-  background-color: #6b580d;
-  cursor: pointer;
+h1 {
+  text-align: center;
+  margin: 80px;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
 }
 </style>

@@ -1,68 +1,88 @@
 <template>
-  <div class="menu">
-    <h1>LoginPage</h1>
-
-    <input type="text" placeholder="UserName" v-model="username" />
-    <p v-if="usernameError" class="error">{{ usernameError }}</p>
-    <input type="password" placeholder="Senha" v-model="password" />
-    <p v-if="passwordError" class="error">{{ passwordError }}</p>
-    <button class="btn-login" @click="login">Login</button>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <!-- botao voltar -->
-    <button class="btn-voltar" @click="voltar">Voltar</button>
+  <div class="login container">
+    <h1 class="text-center my-3 title">Logar com um usuário já existente:</h1>
+    <form @submit.prevent="login">
+      <div class="mb-4">
+        <label for="username" class="form-label">Nome do usuário:</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="username"
+          v-model="username"
+        />
+        <p v-if="usernameError" class="text-danger">{{ usernameError }}</p>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha:</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="password"
+          v-model="password"
+        />
+        <p v-if="passwordError" class="text-danger">{{ passwordError }}</p>
+      </div>
+      <div class="buttons">
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-warning">Login</button>
+        </div>
+        <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+        <div class="d-grid gap-2 mt-3">
+          <button type="button" class="btn btn-dark" @click="voltar">Voltar</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
+  name: "LoginPage",
+  data() {
+    return {
+      username: "",
+      password: "",
+      usernameError: "",
+      passwordError: "",
+      errorMessage: "",
+    };
+  },
   methods: {
+    ...mapMutations(["setPage"]),
+    login() {
+      // Implement your login logic here
+    },
     voltar() {
-      this.$store.commit("setPage", "HomeMenu");
+      this.setPage("HomeMenu");
     },
   },
 };
 </script>
 
-<style scoped lang="scss">
-.menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 800px;
-  align-items: center;
+<style scoped>
+
+.title {
+  color: rgb(0, 0, 0) !important;
+  margin-bottom: 50px !important;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-input {
-  font-size: 24px;
-  margin-top: 30px;
-  padding: 10px;
+.login {
+  margin-top: 20px;
+  padding: 70px;
 }
 
-.error {
-  color: red;
+label {
+  margin-top: 40px;
+  font-weight: bold;
 }
 
-.btn-login {
-  background-color: #acac2b;
-  font-size: 20pt;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: 20px;
+.buttons {
+  margin-top: 120px;
 }
 
-.btn-login:hover {
-  background-color: #2741d8;
-}
-
-.btn-voltar {
-  background-color: #ececdf;
-  font-size: 20pt;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: 20px;
-}
-
-.btn-voltar:hover {
-  background-color: #2741d8;
-}
 </style>

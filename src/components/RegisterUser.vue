@@ -53,9 +53,11 @@
 
 <script>
 import axios from "axios";
+import navigationMixin from "@/mixins/navigationMixin";
 
 export default {
   name: "RegisterUser",
+  mixins: [navigationMixin],
   data() {
     return {
       name: "",
@@ -97,6 +99,8 @@ export default {
   },
   methods: {
     async cadastrar() {
+      this.successPage = false;
+      this.errorMessage = "";
       this.nameError = this.nameErrorComputed !== "";
       this.usernameError = this.usernameErrorComputed !== "";
       this.passwordError = this.passwordErrorComputed !== "";
@@ -106,6 +110,7 @@ export default {
       }
 
       try {
+        console.log(this.name, this.username, this.password);
         const response = await axios.post("http://localhost:8085/persons", {
           name: this.name,
           username: this.username,
@@ -120,13 +125,13 @@ export default {
       }
     },
     voltar() {
-      this.$store.commit("setPage", "HomeMenu");
+      this.navigateTo("HomePage");
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .register {
   margin-top: 20px;
   padding: 70px;

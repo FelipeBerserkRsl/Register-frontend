@@ -1,5 +1,5 @@
 <template>
-  <div class="container menu">
+  <div class="menu">
     <img src="../assets/bitcoin.png" alt="" />
     <h1 class="">Seja bem-vindo ao sistema de cadastro de usuários</h1>
     <div class="d-flex flex-column align-items-center">
@@ -15,17 +15,22 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import navigationMixin from '@/mixins/navigationMixin';
+
 
 export default {
   name: "HomeMenu",
+  mixins: [navigationMixin],
+  computed: {
+    ...mapGetters(["paginaAtual"]),
+  },
   methods: {
-    ...mapMutations(["setPage"]),
     startLogin() {
-      this.setPage("LoginPage");
+      this.navigateTo("LoginPage");
     },
     startRegister() {
-      this.setPage("RegisterUser");
+      this.navigateTo("RegisterUser");
     },
   },
 };

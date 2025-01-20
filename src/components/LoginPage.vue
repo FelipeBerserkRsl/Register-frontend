@@ -38,10 +38,12 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import axios from "axios";
+import navigationMixin from "@/mixins/navigationMixin";
 
 export default {
   name: "LoginPage",
+  mixins: [navigationMixin],
   data() {
     return {
       username: "",
@@ -52,12 +54,23 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setPage"]),
     login() {
-      // Implement your login logic here
+      // Construct the URL with path parameters
+      const url = `http://localhost:8085/persons/login/${this.username}/${this.password}`;
+      console.log(url);
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.navigateTo("PrincipalPage");
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorMessage = "Login failed. Please check your username and password.";
+        });
     },
     voltar() {
-      this.setPage("HomeMenu");
+      this.navigateTo("HomePage");
     },
   },
 };

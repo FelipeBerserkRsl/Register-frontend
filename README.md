@@ -1,24 +1,13 @@
-# register-front
+VUE
+VUEX
+AXIOS
+JAVASCRIP
+HTML
+CSS
+VUE ROUTER 
+microfront 
 
-## Project setup
-```
-npm install
-```
+TO DO 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+area logada. 
+testes de carga
